@@ -1,18 +1,27 @@
 # this is included by mkvendor.sh
-# lets leave it here :>
+# lets just leave it here :>
 USE_CAMERA_STUB := true
 
 # *most* are referred from kyasu's gt-i9506 device tree. Props!
 
 # inherit from common-mt6735
--include device/samsung/mt6735-common/BoardConfigCommon.mk
+# -include device/samsung/mt6735-common/BoardConfigCommon.mk
+# nope :)
 
 # Build with Clang by default
 # USE_CLANG_PLATFORM_BUILD := true
+# i don't know. build recovery w/ this take 15min / 8min w/ jack
 
 # current kernel from samsung opensource is VERY outdated
 # Prebuilt
-TARGET_PREBUILT_KERNEL := device/samsung/grandppltedx/kernel
+# TARGET_PREBUILT_KERNEL := device/samsung/grandppltedx/kernel
+# because im dumb. ramdisk contents is defined by rootdir contents
+
+# kernel stuff
+# 	use kernel source. prop2 Sub for L.OS defconfig
+# 	Though i don't know if it's any better :3
+TARGET_KERNEL_SOURCE := kernel/samsung/grandppltedx
+TARGET_KERNEL_CONFIG := mt6737t-grandppltedx-lineageos_defconfig
 
 # is 32-bit
 FORCE_32_BIT := true
@@ -20,7 +29,7 @@ FORCE_32_BIT := true
 # set local-path
 LOCAL_PATH := device/samsung/grandppltedx
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
-TARGET_OTA_ASSERT_DEVICE := grandpptle,grandppltedx,G532G,G532G/DS
+TARGET_OTA_ASSERT_DEVICE := grandpplte,grandppltedx,G532G,G532G/DS
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := mt6737t
@@ -60,7 +69,12 @@ BOARD_USES_MTK_MEDIA_PROFILES := true
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,32N2
 # why permissive on SELinux-enforcing device?
 BOARD_KERNEL_BASE := 0x3fffc000
+BOARD_RAMDISK_OFFSET = 0x04004000
+BOARD_TAGS_OFFSET = 0xE004000
+BOARD_KERNEL_OFFSET = 0x00008000
 BOARD_KERNEL_PAGESIZE := 2048
+
+BOARD_MKBOOTIMG_ARGS := --base $(BOARD_KERNEL_BASE) --pagesize 2048 --kernel_offset $(BOARD_KERNEL_OFFSET) --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_TAGS_OFFSET) --dt $(LOCAL_PATH)/dt.img --board SRPPI01A000KU
 
 # fix this up by examining --/proc/mtd-- on a running device
 # nope, /proc/partitions
@@ -89,8 +103,11 @@ TARGET_SCREEN_HEIGHT := 960
 TARGET_SCREEN_WIDTH := 540
 # should force DPI?
 
+# Recovery
+#RECOVERY_VARIANT := twrp
+
 # inherit from the proprietary version
--include vendor/samsung/grandppltedx/BoardConfigVendor.mk
+#-include vendor/samsung/grandppltedx/BoardConfigVendor.mk
 
-
+# I don't really know the purpose?
 BOARD_HAS_NO_SELECT_BUTTON := true
