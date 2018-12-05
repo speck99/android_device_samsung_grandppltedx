@@ -81,8 +81,19 @@ PRODUCT_COPY_FILES += \
 # Root
 PRODUCT_PACKAGES += \
 	fstab.mt6735 \
+	factory_init.project.rc \
+	factory_init.rc \
+	init.modem.rc \
 	init.mt6735.rc \
 	init.mt6735.usb.rc \
+	meta_init.moden.rc \
+	meta_init.project.rc \
+	meta_init.rc \
+	init.project.rc \
+	init.rilcommon.rc \
+	init.rilchip.rc \
+	init.rilepdg.rc \
+	init.wifi.rc \
 	ueventd.mt6735.rc   
     
 # Audio
@@ -142,7 +153,6 @@ PRODUCT_PACKAGES += \
     wpa_supplicant \
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/wifi/WMT_SOC.cfg:system/etc/firmware/WMT_SOC.cfg \
     $(LOCAL_PATH)/configs/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
     $(LOCAL_PATH)/configs/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
     $(LOCAL_PATH)/configs/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf

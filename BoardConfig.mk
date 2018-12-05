@@ -21,7 +21,7 @@ USE_CAMERA_STUB := true
 # 	use kernel source. prop2 Sub for L.OS defconfig
 # 	Though i don't know if it's any better :3
 TARGET_KERNEL_SOURCE := kernel/samsung/grandppltedx
-TARGET_KERNEL_CONFIG := mt6737t-grandppltedx-lineageos_defconfig
+TARGET_KERNEL_CONFIG := mt6737t-grandpplte_defconfig
 
 # is 32-bit
 FORCE_32_BIT := true
