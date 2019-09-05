@@ -24,11 +24,6 @@ DEVICE_PATH := device/samsung/grandppltedx
 # Vendor
 $(call inherit-product-if-exists, vendor/samsung/grandppltedx/grandppltedx-vendor.mk)
 
-# hmm
-#include device/samsung/grandppltedx/configs/extra-makefiles/tempo-fix.mk
-include device/samsung/grandppltedx/configs/extra-makefiles/permissions.mk
-include device/samsung/grandppltedx/configs/extra-makefiles/hardware.mk
-
 # Overlay
 DEVICE_PACKAGE_OVERLAYS += $(DEVICE_PATH)/overlay
 
@@ -45,10 +40,6 @@ PRODUCT_PACKAGES += \
 
 # Dalvik heap configurations
 $(call inherit-product-if-exists, frameworks/native/build/phone-hdpi-2048-dalvik-heap.mk)
-
-# Locale
-PRODUCT_DEFAULT_LANGUAGE := en
-PRODUCT_DEFAULT_REGION   := US
 
 # Configs
 #-- Audio
@@ -89,10 +80,6 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/media/media_codecs.xml:system/etc/media_codecs.xml
 #	$(DEVICE_PATH)/configs/media/media_profiles.xml:system/etc/media_profiles.xml \
 
-PRODUCT_PROPERTY_OVERRIDES += \
-	media.sf.omx-plugin=libffmpeg_omx.so,libsomxcore.so
-
-
 # Wifi
 PRODUCT_PACKAGES += \
 	dhcpcd.conf \
@@ -116,9 +103,6 @@ PRODUCT_PACKAGES += \
 	muxreport \
 	terservice
 
-#PRODUCT_PACKAGES += \
-#	libsecnativefeature
-
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.kernel.android.checkjni=0
 
@@ -126,10 +110,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/carrier/apns-conf.xml:system/etc/apns-conf.xml \
 	$(DEVICE_PATH)/configs/carrier/spn-conf.xml:system/etc/spn-conf.xml
-
-#-- RIL
-#
-SIM_COUNT := 2
 
 PRODUCT_PACKAGES += \
 	libxml2 \
@@ -142,25 +122,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.kernel.android.checkjni=0 \
 	ro.telephony.ril_class=grandpplteRIL
 
-#-- FM
-MTK_FM_SUPPORT := true
-
 PRODUCT_PACKAGES += \
 	libfmjni \
 	FMRadio
-
-# shim / symbols
-PRODUCT_PACKAGES += \
-	liblog_mtk \
-	mtk_symbols \
-	libshim_thermal \
-	libshim_general
-
-#	libshim_mtkomx-mm
-
-# use porridge mtk_symbol instead | 	mtk_symbols \
-# broken patches |	libshim_thermal \
-# removed libsec-ims.so | 	libshim_secims \
 
 # Recovery - twrp
 PRODUCT_COPY_FILES += \
@@ -172,18 +136,10 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/thermal/thermal.conf:system/etc/.tp/thermal.conf \
 	$(DEVICE_PATH)/configs/thermal/thermal.off.conf:system/etc/.tp/thermal.off.conf
 
-# GPS
-PRODUCT_PACKAGES += \
-	gps.mt6737t \
-	libcurl
 
 PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
 	$(DEVICE_PATH)/configs/agps_profiles_conf2.xml:system/etc/agps_profiles_conf2.xml
-
-$(call inherit-product, device/common/gps/gps_us_supl.mk)
-
-PRODUCT_COPY_FILES += \
 
 # Init
 PRODUCT_PACKAGES += \
@@ -198,37 +154,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	lights.mt6737t
 
-# Sensor
-PRODUCT_PACKAGES += \
-	libnvram
-
-# memtrack
-PRODUCT_PACKAGES += \
-	memtrack.mt6737t
-    
-# Rootdir
-PRODUCT_PACKAGES += \
-	enableswap.sh \
-	factory_init.rc \
-	factory_init.project.rc \
-	fstab.mt6735 \
-	init.modem.rc \
-	init.mt6735.rc \
-	init.mt6735.usb.rc \
-	init.project.rc \
-	init.rilcommon.rc \
-	init.rilchip.rc \
-	init.rilepdg.rc \
-	init.volte.rc \
-	init.usb.configfs.rc \
-	init.wifi.rc \
-	meta_init.rc \
-	meta_init.modem.rc \
-	meta_init.project.rc \
-	meta_init.usb.rc \
-	init.recovery.mt6735.rc \
-	init.samsung.rc \
-	ueventd.mt6735.rc
+# Ramdisk
+PRODUCT_COPY_FILES += \
+    $(call find-copy-subdir-files,*,${LOCAL_PATH}/rootdir,root)
 
 #-- sbin
 PRODUCT_COPY_FILES += \
